@@ -1,0 +1,66 @@
+{
+  "name": "avatar-cropper",
+  "id": "img-avatar-cropper",
+  "version": "1.0.0",
+  "description": "头像裁剪组件，支持 APP（含 Android 10）和 H5 端，帧-图交叉区域算法确保裁剪输出与视觉一致，零依赖开箱即用",
+  "displayName": "头像裁剪",
+  "main": "components/img-cropper/img-cropper.vue",
+  "keywords": [
+    "头像裁剪",
+    "图片裁剪",
+    "avatar-cropper",
+    "image-cropper",
+    "头像编辑",
+    "圆形裁剪",
+    "方形裁剪",
+    "手势缩放",
+    "uni-app",
+    "APP端",
+    "H5"
+  ],
+  "author": "xyytwz",
+  "license": "MIT",
+  "repository": "https://github.com/xyytwz/img-avatar-cropper.git",
+  "engines": {
+    "HBuilderX": "^3.0.0"
+  },
+  "dcloudext": {
+    "category": [
+      "前端组件",
+      "通用组件"
+    ],
+    "sale": {
+      "regular": {
+        "price": "0.00"
+      },
+      "sourcecode": {
+        "price": "0.00"
+      }
+    }
+  },
+  "uni_modules": {
+    "dependencies": [],
+    "encrypt": [],
+    "platforms": {
+      "cloud": {
+        "tcb": "y",
+        "aliyun": "y"
+      },
+      "client": {
+        "App": {
+          "app-vue": "y",
+          "app-nvue": "n"
+        },
+        "H5": {
+          "pc": "y",
+          "mobile": "y"
+        },
+        "微信小程序": "u",
+        "支付宝小程序": "u",
+        "百度小程序": "u",
+        "字节跳动小程序": "u",
+        "QQ小程序": "u"
+      }
+    }
+  }
+}
