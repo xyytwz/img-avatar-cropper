@@ -25,6 +25,8 @@
             top: `${centerOffsetY + translateY}px`,
             width: `${Math.floor(imageWidth * scale)}px`,
             height: `${displayedH}px`,
+            transform: `rotate(${rotation}deg)`,
+            transformOrigin: 'center center',
           }"
         />
         <!-- 裁剪框遮罩：用 4 块半透明区域代替挖空，兼容性更好 -->
@@ -54,6 +56,14 @@
           :class="{ 'imgc-preview-circle': outputShape === 'circle' }"
           mode="aspectFit"
         />
+      </view>
+
+      <!-- 旋转工具栏 -->
+      <view v-show="!isPreview" class="imgc-toolbar">
+        <view class="imgc-tool-btn" @click="rotateCrop">
+          <text class="imgc-tool-icon">↻</text>
+          <text class="imgc-tool-label">旋转</text>
+        </view>
       </view>
 
       <!-- 操作按钮 -->
@@ -104,7 +114,7 @@
 import { computed, defineComponent, getCurrentInstance, nextTick, ref } from 'vue';
 
 export default defineComponent({
-  name: 'ImgCropper'
+  name: 'ImgCropper',
   props: {
     /** 输出图片宽度，单位 px */
     outputWidth: { type: Number, default: 800 },
@@ -148,6 +158,7 @@ export default defineComponent({
     const translateX = ref(0);
     const translateY = ref(0);
     const scale = ref(1);
+    const rotation = ref(0);
 
     // ─── 触摸状态 ───
     const touchStartX = ref(0);
@@ -204,7 +215,7 @@ export default defineComponent({
             const ratio = info.width / info.height;
             imageWidth.value = framePx.value;
             imageHeight.value = framePx.value / ratio;
-            cropAreaHeight.value = framePx.value + uni.upx2px(80);
+            cropAreaHeight.value = framePx.value + uni.upx2px(200);
             translateX.value = 0;
             translateY.value = 0;
           },
@@ -230,6 +241,11 @@ export default defineComponent({
       scale.value = 1;
       translateX.value = 0;
       translateY.value = 0;
+      rotation.value = 0;
+    };
+
+    const rotateCrop = () => {
+      rotation.value = (rotation.value + 90) % 360;
     };
 
     const reEditCrop = () => {
@@ -332,6 +348,7 @@ export default defineComponent({
      */
     const cropImage = (): Promise<string> => {
       return new Promise((resolve, reject) => {
+        const rot = rotation.value;
         const imgLeft = centerOffsetX.value + translateX.value;
         const imgTop = centerOffsetY.value + translateY.value;
         const dW = Math.floor(imageWidth.value * scale.value);
@@ -352,16 +369,52 @@ export default defineComponent({
         const ratio = originWidth.value / dW;
 
         if (iR > iL && iB > iT) {
-          const sx = (iL - imgLeft) * ratio;
-          const sy = (iT - imgTop) * ratio;
-          const sw = (iR - iL) * ratio;
-          const sh = (iB - iT) * ratio;
           const outputScale = props.outputWidth / fp;
           const iw = iR - iL;
           const ih = iB - iT;
-          const dx = ((fp - iw) * outputScale) / 2;
-          const dy = ((fp - ih) * outputScale) / 2;
-          ctx.drawImage(imageSrc.value, sx, sy, sw, sh, dx, dy, iw * outputScale, ih * outputScale);
+          const ow = iw * outputScale;
+          const oh = ih * outputScale;
+
+          if (rot === 0) {
+            const sx = (iL - imgLeft) * ratio;
+            const sy = (iT - imgTop) * ratio;
+            const sw = (iR - iL) * ratio;
+            const sh = (iB - iT) * ratio;
+            const dx = ((fp - iw) * outputScale) / 2;
+            const dy = ((fp - ih) * outputScale) / 2;
+            ctx.drawImage(imageSrc.value, sx, sy, sw, sh, dx, dy, ow, oh);
+          } else {
+            // 旋转变换：先按无旋转计算源区域，再通过 canvas 变换实现旋转
+            const sx = (iL - imgLeft) * ratio;
+            const sy = (iT - imgTop) * ratio;
+            const sw = (iR - iL) * ratio;
+            const sh = (iB - iT) * ratio;
+
+            ctx.save();
+            if (rot === 90) {
+              // 顺时针 90°：画布宽高互换
+              ctx.translate(props.outputHeight, 0);
+              ctx.rotate(Math.PI / 2);
+              const dx = ((fp - iw) * outputScale) / 2;
+              const dy = ((fp - ih) * outputScale) / 2;
+              ctx.drawImage(imageSrc.value, sx, sy, sw, sh, dx, dy, ow, oh);
+            } else if (rot === 180) {
+              // 180°：画布宽高不变，内容翻转
+              ctx.translate(props.outputWidth, props.outputHeight);
+              ctx.rotate(Math.PI);
+              const dx = ((fp - iw) * outputScale) / 2;
+              const dy = ((fp - ih) * outputScale) / 2;
+              ctx.drawImage(imageSrc.value, sx, sy, sw, sh, dx, dy, ow, oh);
+            } else if (rot === 270) {
+              // 顺时针 270°：画布宽高互换
+              ctx.translate(0, props.outputWidth);
+              ctx.rotate(-Math.PI / 2);
+              const dx = ((fp - iw) * outputScale) / 2;
+              const dy = ((fp - ih) * outputScale) / 2;
+              ctx.drawImage(imageSrc.value, sx, sy, sw, sh, dx, dy, ow, oh);
+            }
+            ctx.restore();
+          }
         }
 
         ctx.draw(false, () => {
@@ -374,12 +427,12 @@ export default defineComponent({
 
     return {
       visible, imageSrc, previewSrc, isPreview,
-      imageWidth, scale, translateX, translateY,
+      imageWidth, scale, translateX, translateY, rotation,
       centerOffsetX, centerOffsetY, displayedH,
       framePx, frameTopPx, cropAreaHeight,
       canvasId, maskStyle,
       touchStart, touchMove, touchEnd,
-      resetCrop, reEditCrop, confirmCrop,
+      resetCrop, reEditCrop, confirmCrop, rotateCrop,
       handleCancel, handleConfirm,
     };
   },
@@ -468,10 +521,37 @@ export default defineComponent({
   border-radius: 50%;
 }
 
+.imgc-toolbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24rpx 0 0;
+}
+
+.imgc-tool-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12rpx 32rpx;
+  border-radius: 32rpx;
+  background: #f5f5f5;
+}
+
+.imgc-tool-icon {
+  font-size: 36rpx;
+  color: #333;
+  margin-right: 8rpx;
+}
+
+.imgc-tool-label {
+  font-size: 28rpx;
+  color: #666;
+}
+
 .imgc-footer {
   display: flex;
   justify-content: space-between;
-  margin-top: 40rpx;
+  margin-top: 24rpx;
 }
 
 .imgc-btn {
