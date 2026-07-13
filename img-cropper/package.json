@@ -1,8 +1,8 @@
 {
   "name": "avatar-cropper",
   "id": "img-avatar-cropper",
-  "version": "1.0.0",
-  "description": "头像裁剪组件，支持 APP（含 Android 10）和 H5 端，帧-图交叉区域算法确保裁剪输出与视觉一致，零依赖开箱即用",
+  "version": "1.1.0",
+  "description": "头像裁剪组件，支持 APP（含 Android 10）和 H5 端，支持单指拖拽、双指缩放、图片旋转，帧-图交叉区域算法确保裁剪输出与视觉一致，零依赖开箱即用",
   "displayName": "头像裁剪",
   "main": "components/img-cropper/img-cropper.vue",
   "keywords": [
@@ -11,6 +11,7 @@
     "avatar-cropper",
     "image-cropper",
     "头像编辑",
+    "图片旋转",
     "圆形裁剪",
     "方形裁剪",
     "手势缩放",

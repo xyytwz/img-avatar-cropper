@@ -11,6 +11,7 @@
 - ✅ 头像裁剪（圆形/方形）
 - ✅ 单指拖拽移动图片
 - ✅ 双指缩放调整大小
+- ✅ 图片旋转（每次顺时针旋转 90°）
 - ✅ 裁剪预览
 - ✅ 零依赖开箱即用
 - ✅ 支持 H5 和 APP（含 Android 10）
@@ -49,21 +50,30 @@ cd img-avatar-cropper-demo
 ## 项目结构
 
 ```
-img-cropper-demo/
+img-avatar-cropper/
+├── img-cropper/                   # 插件发布目录（可独立发布到 dcloud 插件市场）
+│   ├── components/
+│   │   └── img-cropper/
+│   │       └── img-cropper.vue    # 组件源码
+│   ├── pages/
+│   │   └── demo/
+│   │       └── demo.vue           # 插件演示页
+│   ├── package.json               # 插件元信息
+│   └── readme.md                  # 插件文档
 ├── pages/
 │   └── index/
-│       └── index.vue          # 示例页面（头像裁剪演示）
+│       └── index.vue              # 示例页面（头像裁剪演示）
 ├── uni_modules/
-│   └── img-cropper/           # 裁剪组件插件
+│   └── img-cropper/               # 裁剪组件插件（easycom 自动注册）
 │       └── components/
 │           └── img-cropper/
 │               └── img-cropper.vue
-├── static/                    # 静态资源
-├── App.vue                    # 应用入口
-├── main.js                    # 主入口文件
-├── pages.json                 # 页面配置
-├── manifest.json              # 应用配置
-└── package.json               # 插件配置
+├── static/                        # 静态资源
+├── App.vue                        # 应用入口
+├── main.js                        # 主入口文件
+├── pages.json                     # 页面配置
+├── manifest.json                  # 应用配置
+└── README.md                      # 示例工程文档
 ```
 
 ## 核心代码示例
@@ -177,6 +187,11 @@ uni_modules/
 | themeColor | String | '#07c160' | 确认按钮主题色 |
 | frameColor | String | '#ffffff' | 裁剪框边框颜色 |
 | title | String | '裁剪图片' | 弹窗标题 |
+| cancelText | String | '取消' | 取消按钮文案 |
+| resetText | String | '重置' | 重置按钮文案（同时重置缩放、位移和旋转） |
+| reEditText | String | '重新裁剪' | 重新裁剪按钮文案 |
+| cropText | String | '确认' | 确认裁剪按钮文案 |
+| confirmText | String | '确认使用' | 确认使用按钮文案 |
 
 ### Events
 
@@ -242,6 +257,12 @@ uni_modules/
 MIT
 
 ## 更新日志
+
+### v1.1.0 (2026-07-13)
+
+- ✨ 新增图片旋转功能，点击「旋转」按钮每次顺时针旋转 90°
+- ✨ 增大裁剪区域上下留白，操作空间更大
+- ✅ 旋转后裁剪输出与预览完全一致（canvas 旋转变换）
 
 ### v1.0.0 (2026-06-17)
 
