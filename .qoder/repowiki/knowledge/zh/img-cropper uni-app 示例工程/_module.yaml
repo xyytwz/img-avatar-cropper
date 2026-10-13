@@ -1,0 +1,19 @@
+schema_version: 1
+module_path: ""
+title: img-cropper uni-app 示例工程
+scope:
+    - README.md
+    - .gitignore
+    - package.json
+    - package-lock.json
+    - vite.config.js
+    - manifest.json
+    - pages.json
+    - uni.promisify.adaptor.js
+    - index.html
+    - App.vue
+    - main.js
+    - uni.scss
+source_files: []
+depends_on: []
+related_to: []

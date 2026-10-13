@@ -1,0 +1,8 @@
+schema_version: 1
+module_path: img_cropper_component
+title: 头像裁剪 uni-app 组件
+scope:
+    - img-cropper/
+source_files: []
+depends_on: []
+related_to: []

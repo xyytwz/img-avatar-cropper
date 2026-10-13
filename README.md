@@ -26,8 +26,8 @@
 
 ### 环境要求
 
-- HBuilderX 3.0+
-- Node.js（HBuilderX 内置）
+- HBuilderX 3.4.7+（uni-app Vue3 工程，App 端 Vue3 自该版本起支持）
+- Node.js（HBuilderX 内置；命令行方式运行需 18+）
 
 ### 运行步骤
 
@@ -257,6 +257,12 @@ uni_modules/
 MIT
 
 ## 更新日志
+
+### v1.1.1 (2026-10-13)
+
+- 🐛 修复双指缩放以图片左上角为锚点导致的位置偏移，现以视觉中心为锚点缩放
+- 🐛 修复双指缩放中抬起一根手指后继续拖动时图片跳变的问题
+- ✨ 示例工程新增命令行运行方式：`npm run dev:h5` / `npm run build:h5`（无需 HBuilderX）
 
 ### v1.1.0 (2026-07-13)
 

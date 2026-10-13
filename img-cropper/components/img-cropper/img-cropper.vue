@@ -286,13 +286,25 @@ export default defineComponent({
         const newScale =
           touchStartScale.value * (Math.sqrt(dx * dx + dy * dy) / touchStartDistance.value);
         if (newScale >= 1 && newScale <= 3) {
+          // 中心锚定缩放：left 锚定的是图片左边缘，宽度变化量需对半折算进 translateX，
+          // 使视觉中心在缩放前后保持不变（垂直方向已由 centerOffsetY 自动补偿）
+          const oldW = Math.floor(imageWidth.value * scale.value);
+          const newW = Math.floor(imageWidth.value * newScale);
+          translateX.value += (oldW - newW) / 2;
           scale.value = newScale;
         }
       }
     };
 
-    const touchEnd = () => {
+    const touchEnd = (e?: TouchEvent) => {
       isMultiTouch.value = false;
+      // 双指缩放后先抬起一根手指：以剩余手指当前位置重设单指拖拽基准，避免图片跳变
+      if (e && e.touches && e.touches.length === 1) {
+        touchStartX.value = e.touches[0].clientX;
+        touchStartY.value = e.touches[0].clientY;
+        touchStartTranslateX.value = translateX.value;
+        touchStartTranslateY.value = translateY.value;
+      }
     };
 
     // ─── 裁剪逻辑 ───

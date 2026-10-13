@@ -1,0 +1,37 @@
+# 知识卡导出索引文件
+schema_version: 1
+locale: zh-CN
+branch: main
+nodes_managed: true
+exported_at: "2026-10-13T09:19:12Z"
+modules:
+    "":
+        dir_name: img-cropper uni-app 示例工程
+        title: img-cropper uni-app 示例工程
+        scope:
+            - README.md
+            - .gitignore
+            - package.json
+            - package-lock.json
+            - vite.config.js
+            - manifest.json
+            - pages.json
+            - uni.promisify.adaptor.js
+            - index.html
+            - App.vue
+            - main.js
+            - uni.scss
+        source_files: []
+        children:
+            - img_cropper_component
+        depends_on: []
+        related_to: []
+    img_cropper_component:
+        dir_name: 头像裁剪 uni-app 组件
+        title: 头像裁剪 uni-app 组件
+        scope:
+            - img-cropper/
+        source_files: []
+        children: []
+        depends_on: []
+        related_to: []

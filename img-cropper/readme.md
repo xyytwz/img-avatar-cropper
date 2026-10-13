@@ -108,14 +108,21 @@ const onCancel = () => {
 
 ## 支持平台
 
-| 平台 | 支持状态 |
-|------|---------|
-| H5 | ✅ 支持 |
-| APP（Android） | ✅ 支持（含 Android 10） |
-| APP（iOS） | ✅ 支持 |
-| 微信小程序 | ⚠️ 待验证 |
-| 支付宝小程序 | ⚠️ 待验证 |
-| uni-app x | ❌ 不支持（需改用 Canvas 2D API） |
+| 平台 | 支持状态 | 最低兼容版本 |
+|------|---------|------------|
+| H5 | ✅ 支持 | Chrome 87+ / Safari 14+（Vue3/Vite 默认编译目标） |
+| APP（Android） | ✅ 支持（含 Android 10） | HBuilderX 3.4.7+ |
+| APP（iOS） | ✅ 支持 | HBuilderX 3.4.7+ |
+| APP（nvue） | ❌ 不支持 | - |
+| 微信小程序 | ⚠️ 待验证 | - |
+| 支付宝小程序 | ⚠️ 待验证 | - |
+| uni-app x | ❌ 不支持（需改用 Canvas 2D API） | - |
+
+### 版本要求
+
+- 组件为纯 Vue 3 写法（Composition API + `expose`），**仅支持 uni-app Vue3 版工程，不支持 Vue2 工程**
+- HBuilderX 最低 **3.4.7**：App 端 Vue3 运行/发行自该版本起支持（仅 H5 端可放宽至 3.4.6）
+- 通过 uni-app CLI 运行示例工程时需 Node.js 18+（Vite 5 要求）
 
 ## 技术说明
 
@@ -174,6 +181,11 @@ dy = (framePx - intersectH) * outputScale / 2
 MIT
 
 ## 更新日志
+
+### v1.1.1 (2026-10-13)
+
+- 🐛 修复双指缩放以图片左上角为锚点导致的位置偏移，现以视觉中心为锚点缩放
+- 🐛 修复双指缩放中抬起一根手指后继续拖动时图片跳变的问题
 
 ### v1.1.0 (2026-07-13)
 
