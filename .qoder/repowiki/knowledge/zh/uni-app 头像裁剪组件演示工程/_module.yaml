@@ -1,6 +1,6 @@
 schema_version: 1
 module_path: ""
-title: img-cropper uni-app 示例工程
+title: uni-app 头像裁剪组件演示工程
 scope:
     - README.md
     - .gitignore

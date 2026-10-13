@@ -3,11 +3,11 @@ schema_version: 1
 locale: zh-CN
 branch: main
 nodes_managed: true
-exported_at: "2026-10-13T09:19:12Z"
+exported_at: "2026-10-13T09:59:47Z"
 modules:
     "":
-        dir_name: img-cropper uni-app 示例工程
-        title: img-cropper uni-app 示例工程
+        dir_name: uni-app 头像裁剪组件演示工程
+        title: uni-app 头像裁剪组件演示工程
         scope:
             - README.md
             - .gitignore
